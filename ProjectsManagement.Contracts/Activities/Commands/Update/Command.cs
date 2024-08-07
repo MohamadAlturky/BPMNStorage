@@ -1,5 +1,6 @@
 ﻿using ProjectsManagement.Core.Activities;
 using ProjectsManagement.Core.ProjectTasks;
+using ProjectsManagement.SharedKernel.AccessControl;
 using ProjectsManagement.SharedKernel.CQRS;
 using ProjectsManagement.SharedKernel.Results;
 
@@ -17,4 +18,12 @@ public class UpdateActivityCommand : ICommand<Activity>
     public int Project { get; set; }
     public int ActivityType { get; set; }
     public int ActivityResourceType { get; set; }
+    public AccessControlCriteria Criteria()
+    {
+        return new()
+        {
+            Activity = Id,
+            Project = Project
+        };
+    }
 }

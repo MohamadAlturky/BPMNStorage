@@ -1,5 +1,6 @@
 ﻿using ProjectsManagement.Core.Activities;
 using ProjectsManagement.Core.ProjectTasks;
+using ProjectsManagement.SharedKernel.AccessControl;
 using ProjectsManagement.SharedKernel.CQRS;
 using ProjectsManagement.SharedKernel.Results;
 
@@ -13,4 +14,8 @@ public class CreateProjectTaskCommand : ICommand<ProjectTask>
 
     public int Project { get; set; }
     public int TaskStatus { get; set; }
+    public AccessControlCriteria Criteria()
+    {
+        return new();
+    }
 }

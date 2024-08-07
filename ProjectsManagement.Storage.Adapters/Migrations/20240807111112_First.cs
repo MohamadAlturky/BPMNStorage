@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,12 +14,37 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AccessControlledEntities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessControlledEntities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessRights",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessRights", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ActivityResourceType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,9 +55,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ActivityType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,9 +68,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ContributionType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,9 +81,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "InvitationStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,9 +94,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ProjectType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,9 +107,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "TaskStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,44 +117,75 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "AccessControlledEntityRights",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
-                    ProjectType = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccessRight = table.Column<int>(type: "int", nullable: false),
+                    AccessControlledEntity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.PrimaryKey("PK_AccessControlledEntityRights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccessControlledEntityRights_AccessControlledEntities_AccessControlledEntity",
+                        column: x => x.AccessControlledEntity,
+                        principalTable: "AccessControlledEntities",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AccessControlledEntityRights_AccessRights_AccessRight",
+                        column: x => x.AccessRight,
+                        principalTable: "AccessRights",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Project",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
+                    ProjectType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Project_AccessControlledEntities_Id",
+                        column: x => x.Id,
+                        principalTable: "AccessControlledEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Projects_ProjectTypes_ProjectTypeId",
                         column: x => x.ProjectType,
                         principalTable: "ProjectType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Activity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Project = table.Column<int>(type: "integer", nullable: false),
-                    ActivityType = table.Column<int>(type: "integer", nullable: false),
-                    ActivityResourceType = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Project = table.Column<int>(type: "int", nullable: false),
+                    ActivityType = table.Column<int>(type: "int", nullable: false),
+                    ActivityResourceType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectActivities", x => x.Id);
+                    table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Activity_AccessControlledEntities_Id",
+                        column: x => x.Id,
+                        principalTable: "AccessControlledEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProjectActivities_ProjectActivityResourceTypes_ProjectActivityResourceTypeId",
                         column: x => x.ActivityResourceType,
@@ -145,91 +200,99 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         name: "FK_ProjectActivities_Projects_ProjectId",
                         column: x => x.Project,
                         principalTable: "Project",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "ContributionMember",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Project = table.Column<int>(type: "integer", nullable: false),
-                    Contributor = table.Column<int>(type: "integer", nullable: false),
-                    ContributionType = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Project = table.Column<int>(type: "int", nullable: false),
+                    Contributor = table.Column<int>(type: "int", nullable: false),
+                    ContributionType = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContributionMembers", x => x.Id);
+                    table.PrimaryKey("PK_ContributionMember", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContributionMember_AccessControlledEntities_Id",
+                        column: x => x.Id,
+                        principalTable: "AccessControlledEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ContributionMembers_ContributionTypes_ContributionTypeId",
                         column: x => x.ContributionType,
                         principalTable: "ContributionType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ContributionMembers_Projects_ProjectId",
                         column: x => x.Project,
                         principalTable: "Project",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Invitation",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Message = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Contributor = table.Column<int>(type: "integer", nullable: false),
-                    Project = table.Column<int>(type: "integer", nullable: false),
-                    InvitationStatus = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Contributor = table.Column<int>(type: "int", nullable: false),
+                    Project = table.Column<int>(type: "int", nullable: false),
+                    InvitationStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.PrimaryKey("PK_Invitation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitation_AccessControlledEntities_Id",
+                        column: x => x.Id,
+                        principalTable: "AccessControlledEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Invitations_InvitationStatuses_InvitationStatusId",
                         column: x => x.InvitationStatus,
                         principalTable: "InvitationStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Invitations_Projects_ProjectId",
                         column: x => x.Project,
                         principalTable: "Project",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Task",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
-                    Project = table.Column<int>(type: "integer", nullable: false),
-                    TaskStatus = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
+                    Project = table.Column<int>(type: "int", nullable: false),
+                    TaskStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectTasks", x => x.Id);
+                    table.PrimaryKey("PK_Task", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProjectTasks_ProjectTaskStatuses_ProjectTaskStatusId",
                         column: x => x.TaskStatus,
                         principalTable: "TaskStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProjectTasks_Projects_ProjectId",
                         column: x => x.Project,
                         principalTable: "Project",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Task_AccessControlledEntities_Id",
+                        column: x => x.Id,
+                        principalTable: "AccessControlledEntities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -238,10 +301,10 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ActivityPrecedents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Activity = table.Column<int>(type: "integer", nullable: false),
-                    Precedent = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Activity = table.Column<int>(type: "int", nullable: false),
+                    Precedent = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,8 +318,7 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         name: "FK_ProjectActivityPrecedents_ProjectActivities_ProjectActivityId",
                         column: x => x.Activity,
                         principalTable: "Activity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -318,6 +380,16 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                     { 2, "Failed" },
                     { 3, "Finished" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessControlledEntityRights_AccessControlledEntity",
+                table: "AccessControlledEntityRights",
+                column: "AccessControlledEntity");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessControlledEntityRights_AccessRight",
+                table: "AccessControlledEntityRights",
+                column: "AccessRight");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectActivities_ProjectActivityResourceTypeId",
@@ -384,6 +456,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccessControlledEntityRights");
+
+            migrationBuilder.DropTable(
                 name: "ActivityPrecedents");
 
             migrationBuilder.DropTable(
@@ -394,6 +469,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             migrationBuilder.DropTable(
                 name: "Task");
+
+            migrationBuilder.DropTable(
+                name: "AccessRights");
 
             migrationBuilder.DropTable(
                 name: "Activity");
@@ -415,6 +493,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             migrationBuilder.DropTable(
                 name: "Project");
+
+            migrationBuilder.DropTable(
+                name: "AccessControlledEntities");
 
             migrationBuilder.DropTable(
                 name: "ProjectType");

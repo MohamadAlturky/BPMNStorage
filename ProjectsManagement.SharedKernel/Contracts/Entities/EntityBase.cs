@@ -1,4 +1,6 @@
-﻿namespace ProjectsManagement.SharedKernel.Contracts.Entities;
+﻿using System.Diagnostics;
+
+namespace ProjectsManagement.SharedKernel.Contracts.Entities;
 
 public abstract class EntityBase
 {

@@ -1,6 +1,7 @@
 ﻿using ProjectsManagement.Core.Activities;
 using ProjectsManagement.Core.Invitations;
 using ProjectsManagement.Core.ProjectTasks;
+using ProjectsManagement.SharedKernel.AccessControl;
 using ProjectsManagement.SharedKernel.CQRS;
 using ProjectsManagement.SharedKernel.Results;
 
@@ -16,4 +17,8 @@ public class UpdateInvitationCommand : ICommand<Invitation>
 
     public string Message { get; set; } = null!;
     public DateTime Date { get; set; }
+    public AccessControlCriteria Criteria()
+    {
+        return new();
+    }
 }

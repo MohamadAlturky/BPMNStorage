@@ -6,9 +6,8 @@ using ProjectsManagement.SharedKernel.Contracts.Entities;
 
 namespace ProjectsManagement.Core.Projects;
 
-public  class Project : AuditableEntityBase
+public  class Project : AccessControlledEntity
 {
-
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
 

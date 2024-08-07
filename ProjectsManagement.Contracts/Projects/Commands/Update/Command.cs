@@ -1,6 +1,7 @@
 ﻿using ProjectsManagement.Core.Activities;
 using ProjectsManagement.Core.Projects;
 using ProjectsManagement.Core.ProjectTasks;
+using ProjectsManagement.SharedKernel.AccessControl;
 using ProjectsManagement.SharedKernel.CQRS;
 using ProjectsManagement.SharedKernel.Results;
 
@@ -13,4 +14,8 @@ public class UpdateProjectCommand : ICommand<Project>
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
     public int ProjectType { get; set; }
+    public AccessControlCriteria Criteria()
+    {
+        return new();
+    }
 }

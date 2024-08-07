@@ -1,4 +1,5 @@
 ﻿using ProjectsManagement.Core.Contributions;
+using ProjectsManagement.SharedKernel.AccessControl;
 using ProjectsManagement.SharedKernel.CQRS;
 
 namespace ProjectsManagement.Contracts.ProjectTasks.Commands.Update;
@@ -14,4 +15,8 @@ public class UpdateContributionMemberCommand : ICommand<ContributionMember>
     public int ContributionType { get; set; }
 
     public DateTime Date { get; set; }
+    public AccessControlCriteria Criteria()
+    {
+        return new();
+    }
 }

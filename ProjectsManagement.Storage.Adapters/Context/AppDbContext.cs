@@ -5,6 +5,7 @@ using ProjectsManagement.Core.Contributions;
 using ProjectsManagement.Core.Invitations;
 using ProjectsManagement.Core.Projects;
 using ProjectsManagement.Core.ProjectTasks;
+using ProjectsManagement.SharedKernel.Contracts.Entities;
 using ProjectsManagement.Storage.Adapters.Model;
 
 namespace ProjectsManagement.Storage.Adapters.Context;
@@ -14,6 +15,9 @@ public partial class AppDbContext : DbContext
     //public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public AppDbContext() : base() { }
     public virtual DbSet<Activity> Activities { get; set; }
+    public virtual DbSet<AccessControlledEntity> AccessControlledEntities { get; set; }
+    public virtual DbSet<AccessRight> AccessRights { get; set; }
+    public virtual DbSet<AccessControlledEntityRight> AccessControlledEntityRights { get; set; }
 
     public virtual DbSet<ActivityPrecedent> ActivityPrecedents { get; set; }
 
@@ -39,16 +43,20 @@ public partial class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        //if (!optionsBuilder.IsConfigured)
+        //{
+        //    optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
+        //}
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
+            optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=BPPMN;Trusted_Connection=True; Encrypt=False;");
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Activity>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_ProjectActivities");
+            //entity.HasKey(e => e.Id).HasName("PK_ProjectActivities");
 
             entity.ToTable("Activity");
 
@@ -67,16 +75,17 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.ActivityResourceTypeNavigation).WithMany(p => p.Activities)
                 .HasForeignKey(d => d.ActivityResourceType)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectActivities_ProjectActivityResourceTypes_ProjectActivityResourceTypeId");
 
             entity.HasOne(d => d.ActivityTypeNavigation).WithMany(p => p.Activities)
                 .HasForeignKey(d => d.ActivityType)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectActivities_ProjectActivityTypes_ProjectActivityTypeId");
 
             entity.HasOne(d => d.ProjectNavigation).WithMany(p => p.Activities)
                 .HasForeignKey(d => d.Project)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectActivities_Projects_ProjectId");
         });
 
@@ -90,11 +99,14 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.ActivityPrecedentActivityNavigations)
                 .HasForeignKey(d => d.Activity)
+                .OnDelete(DeleteBehavior.NoAction)
+
                 .HasConstraintName("FK_ProjectActivityPrecedents_ProjectActivities_ProjectActivityId");
 
             entity.HasOne(d => d.PrecedentNavigation).WithMany(p => p.ActivityPrecedentPrecedentNavigations)
                 .HasForeignKey(d => d.Precedent)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectActivityPrecedents_ProjectActivities_ActivityPrecedentId");
         });
 
@@ -123,7 +135,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<ContributionMember>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_ContributionMembers");
+            //entity.HasKey(e => e.Id).HasName("PK_ContributionMembers");
 
             entity.ToTable("ContributionMember");
 
@@ -133,10 +145,13 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.ContributionTypeNavigation).WithMany(p => p.ContributionMembers)
                 .HasForeignKey(d => d.ContributionType)
+                .OnDelete(DeleteBehavior.NoAction)
+
                 .HasConstraintName("FK_ContributionMembers_ContributionTypes_ContributionTypeId");
 
             entity.HasOne(d => d.ProjectNavigation).WithMany(p => p.ContributionMembers)
                 .HasForeignKey(d => d.Project)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ContributionMembers_Projects_ProjectId");
         });
 
@@ -150,10 +165,24 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
+        modelBuilder.Entity<AccessControlledEntityRight>(entity =>
+        {
+
+            entity.HasOne(e => e.AccessRightNavigation)
+                    .WithMany(e => e.AccessControlledEntityRights)
+                    .HasForeignKey(d => d.AccessRight)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+            entity.HasOne(e => e.AccessControlledEntityNavigation)
+                  .WithMany(e => e.AccessControlledEntityRights)
+                  .HasForeignKey(d => d.AccessControlledEntity)
+                  .OnDelete(DeleteBehavior.NoAction);
+
+        });
 
         modelBuilder.Entity<Invitation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Invitations");
+            //entity.HasKey(e => e.Id).HasName("PK_Invitations");
 
             entity.ToTable("Invitation");
 
@@ -167,10 +196,12 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.InvitationStatusNavigation).WithMany(p => p.Invitations)
                 .HasForeignKey(d => d.InvitationStatus)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Invitations_InvitationStatuses_InvitationStatusId");
 
             entity.HasOne(d => d.ProjectNavigation).WithMany(p => p.Invitations)
                 .HasForeignKey(d => d.Project)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Invitations_Projects_ProjectId");
         });
 
@@ -187,7 +218,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Project>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Projects");
+            //entity.HasKey(e => e.Id).HasName("PK_Projects");
 
             entity.ToTable("Project");
 
@@ -202,6 +233,7 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.ProjectTypeNavigation).WithMany(p => p.Projects)
                 .HasForeignKey(d => d.ProjectType)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Projects_ProjectTypes_ProjectTypeId");
         });
 
@@ -218,7 +250,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<ProjectTask>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_ProjectTasks");
+            //entity.HasKey(e => e.Id).HasName("PK_ProjectTasks");
 
             entity.ToTable("Task");
 
@@ -235,10 +267,12 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.ProjectNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.Project)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectTasks_Projects_ProjectId");
 
             entity.HasOne(d => d.TaskStatusNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.TaskStatus)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectTasks_ProjectTaskStatuses_ProjectTaskStatusId");
         });
 

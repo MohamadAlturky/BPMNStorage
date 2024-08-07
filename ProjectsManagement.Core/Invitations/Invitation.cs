@@ -4,7 +4,7 @@ using ProjectsManagement.Storage.Adapters.Model;
 
 namespace ProjectsManagement.Core.Invitations;
 
-public class Invitation : EntityBase
+public class Invitation : AccessControlledEntity
 {
     public string Message { get; set; } = null!;
     public DateTime Date { get; set; }

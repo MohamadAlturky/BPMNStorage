@@ -1,4 +1,5 @@
 ﻿using ProjectsManagement.Core.Contributions;
+using ProjectsManagement.SharedKernel.AccessControl;
 using ProjectsManagement.SharedKernel.CQRS;
 
 namespace ProjectsManagement.Contracts.Contributions.Commands.Create;
@@ -12,4 +13,9 @@ public class CreateContributionMemberCommand : ICommand<ContributionMember>
     public int ContributionType { get; set; }
 
     public DateTime Date { get; set; }
+
+    public AccessControlCriteria Criteria()
+    {
+        return new();
+    }
 }

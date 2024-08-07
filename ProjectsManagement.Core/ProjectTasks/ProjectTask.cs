@@ -3,7 +3,7 @@ using ProjectsManagement.SharedKernel.Contracts.Entities;
 
 namespace ProjectsManagement.Core.ProjectTasks;
 
-public class ProjectTask : EntityBase
+public class ProjectTask : AccessControlledEntity
 {
 
     public string Name { get; set; } = null!;

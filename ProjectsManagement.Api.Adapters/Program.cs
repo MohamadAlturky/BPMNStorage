@@ -1,5 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
+using ProjectsManagement.Application.AssemblyReference;
 using ProjectsManagement.Application.Users;
 using ProjectsManagement.Identity.Adapters;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,17 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<IUserIdentityPort, UserIdentityAdapter>();
 builder.Services.AddScoped<IUserIdentityPort, UserIdentityAdapter>();
 builder.Services.AddScoped(typeof(TokenExtractor));
+
+
+
+
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(typeof(CoreAssemblyReference).Assembly);
+});
+    //.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipeLineBehaviorForLogableCommands<,>))
+    //.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipeLineBehaviorForLogableQueries<,>));
+
 
 var app = builder.Build();
 

@@ -4,7 +4,7 @@ using ProjectsManagement.SharedKernel.Contracts.Entities;
 namespace ProjectsManagement.Core.Activities;
 
 
-public partial class Activity : EntityBase
+public partial class Activity : AccessControlledEntity
 {
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
