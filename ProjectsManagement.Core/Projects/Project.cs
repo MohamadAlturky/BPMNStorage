@@ -6,7 +6,7 @@ using ProjectsManagement.SharedKernel.Contracts.Entities;
 
 namespace ProjectsManagement.Core.Projects;
 
-public  class Project : AccessControlledEntity
+public  class Project : EntityBase
 {
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;

@@ -12,12 +12,9 @@ namespace ProjectsManagement.Storage.Adapters.Context;
 
 public partial class AppDbContext : DbContext
 {
-    //public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public AppDbContext() : base() { }
     public virtual DbSet<Activity> Activities { get; set; }
-    public virtual DbSet<AccessControlledEntity> AccessControlledEntities { get; set; }
-    public virtual DbSet<AccessRight> AccessRights { get; set; }
-    public virtual DbSet<AccessControlledEntityRight> AccessControlledEntityRights { get; set; }
 
     public virtual DbSet<ActivityPrecedent> ActivityPrecedents { get; set; }
 
@@ -49,7 +46,7 @@ public partial class AppDbContext : DbContext
         //}
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=BPPMN;Trusted_Connection=True; Encrypt=False;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=BPPMDN;Trusted_Connection=True; Encrypt=False;");
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -164,20 +161,6 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-        });
-        modelBuilder.Entity<AccessControlledEntityRight>(entity =>
-        {
-
-            entity.HasOne(e => e.AccessRightNavigation)
-                    .WithMany(e => e.AccessControlledEntityRights)
-                    .HasForeignKey(d => d.AccessRight)
-                    .OnDelete(DeleteBehavior.NoAction);
-
-            entity.HasOne(e => e.AccessControlledEntityNavigation)
-                  .WithMany(e => e.AccessControlledEntityRights)
-                  .HasForeignKey(d => d.AccessControlledEntity)
-                  .OnDelete(DeleteBehavior.NoAction);
-
         });
 
         modelBuilder.Entity<Invitation>(entity =>

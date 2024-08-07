@@ -9,10 +9,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.7.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectsManagement.Contracts\ProjectsManagement.Contracts.csproj" />
+    <ProjectReference Include="..\ProjectsManagement.Core\ProjectsManagement.Core.csproj" />
+    <ProjectReference Include="..\ProjectsManagement.Endpoints.Adapters\ProjectsManagement.Endpoints.Adapters.csproj" />
     <ProjectReference Include="..\ProjectsManagement.Identity.Adapters\ProjectsManagement.Identity.Adapters.csproj" />
+    <ProjectReference Include="..\ProjectsManagement.SharedKernel\ProjectsManagement.SharedKernel.csproj" />
+    <ProjectReference Include="..\ProjectsManagement.Storage.Adapters\ProjectsManagement.Storage.Adapters.csproj" />
   </ItemGroup>
 
 </Project>

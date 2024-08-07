@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using ProjectsManagement.Contracts.ProjectTasks.Queries.GetById;
-using System.Diagnostics;
+using ProjectsManagement.Core.Activities;
 
 namespace ProjectsManagement.API.Endpoints.Activities;
 

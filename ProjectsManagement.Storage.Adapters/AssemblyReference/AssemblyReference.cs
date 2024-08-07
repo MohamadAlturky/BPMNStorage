@@ -2,4 +2,4 @@
 
 namespace ProjectsManagement.Storage.Adapters.AssemblyReference;
 
-public class StorageAdaptersReference : IAssemblyReference { }
+public class StorageAdaptersAssemblyReference : IAssemblyReference { }

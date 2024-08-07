@@ -2,7 +2,7 @@
 using ProjectsManagement.SharedKernel.Contracts.Entities;
 namespace ProjectsManagement.Core.Contributions;
 
-public class ContributionMember : AccessControlledEntity
+public class ContributionMember : EntityBase
 {
     public int Project { get; set; }
 
