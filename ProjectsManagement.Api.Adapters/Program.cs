@@ -1,9 +1,16 @@
+using ProjectsManagement.Application.Users;
+using ProjectsManagement.Identity.Adapters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient<IUserIdentityPort, UserIdentityAdapter>();
+builder.Services.AddScoped<IUserIdentityPort, UserIdentityAdapter>();
+builder.Services.AddScoped(typeof(TokenExtractor));
 
 var app = builder.Build();
 
@@ -44,6 +51,19 @@ app.MapGet("/api/header", (HttpContext httpContext) =>
         return Results.Ok(headerValue.ToString());
     }
     return Results.BadRequest($"Header '{headerName}' not found");
+});
+app.MapGet("/api/userId", async (IUserIdentityPort port) =>
+{
+    try
+    {
+        int id = await port.GetUserIdAsync();
+        return Results.Ok(id);
+    }
+    catch (Exception)
+    {
+
+    return Results.BadRequest($"Error");
+    }
 });
 app.Run();
 

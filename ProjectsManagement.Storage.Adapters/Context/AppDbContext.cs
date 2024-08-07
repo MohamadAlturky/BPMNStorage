@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectsManagement.Core.Activities;
+using ProjectsManagement.Core.Constants;
 using ProjectsManagement.Core.Contributions;
 using ProjectsManagement.Core.Invitations;
 using ProjectsManagement.Core.Projects;
@@ -10,7 +11,7 @@ namespace ProjectsManagement.Storage.Adapters.Context;
 
 public partial class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {  }
+    //public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public AppDbContext() : base() { }
     public virtual DbSet<Activity> Activities { get; set; }
 
@@ -36,13 +37,13 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<ProjectTaskStatus> ProjectTaskStatus { get; set; }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    if (!optionsBuilder.IsConfigured)
-    //    {
-    //        optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
-    //    }
-    //}
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Activity>(entity =>
@@ -107,6 +108,7 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
+
 
         modelBuilder.Entity<ActivityType>(entity =>
         {
@@ -250,6 +252,46 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
+        // Default Data
+        modelBuilder
+            .Entity<ActivityResourceType>()
+            .HasData([ConstantsProvider.PDF,
+                      ConstantsProvider.PROCESS_DESCRIPTION,
+                      ConstantsProvider.DIAGRAM,
+                      ConstantsProvider.IMAGE
+        ]);
+
+        modelBuilder
+            .Entity<ActivityType>()
+            .HasData([ConstantsProvider.CLOSED,
+                      ConstantsProvider.UPDATED,
+                      ConstantsProvider.INITIALIZED,
+                      ConstantsProvider.MERGED
+        ]);
+
+        modelBuilder
+            .Entity<ProjectTaskStatus>()
+            .HasData([ConstantsProvider.FINISHED,
+                      ConstantsProvider.FAILED,
+                      ConstantsProvider.ON_WORKING
+        ]);
+        modelBuilder
+            .Entity<InvitationStatus>()
+            .HasData([ConstantsProvider.ACCEPTED,
+                      ConstantsProvider.PENDING,
+                      ConstantsProvider.REJECTED
+        ]);
+
+        modelBuilder
+            .Entity<ContributionType>()
+            .HasData([ConstantsProvider.CONTRIBUTOR,
+                      ConstantsProvider.OWNER
+        ]);
+        modelBuilder
+          .Entity<ProjectType>()
+          .HasData([ConstantsProvider.PUBLIC,
+                      ConstantsProvider.PRIVATE
+        ]);
 
         OnModelCreatingPartial(modelBuilder);
     }

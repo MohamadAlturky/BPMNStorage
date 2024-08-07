@@ -108,6 +108,28 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasName("PK_ProjectActivityResourceTypes");
 
                     b.ToTable("ActivityResourceType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Name = "Pdf"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Process Description"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Diagram"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Image"
+                        });
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.ActivityType", b =>
@@ -128,6 +150,28 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasName("PK_ProjectActivityTypes");
 
                     b.ToTable("ActivityType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Name = "Closed"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Updated"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Initialized"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Merged"
+                        });
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Contributions.ContributionMember", b =>
@@ -178,6 +222,18 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasName("PK_ContributionTypes");
 
                     b.ToTable("ContributionType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Name = "Contributor"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Owner"
+                        });
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Invitations.Invitation", b =>
@@ -270,6 +326,23 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasName("PK_ProjectTaskStatuses");
 
                     b.ToTable("TaskStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            Name = "Finished"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Failed"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "On Working"
+                        });
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Projects.Project", b =>
@@ -327,6 +400,18 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasName("PK_ProjectTypes");
 
                     b.ToTable("ProjectType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Public"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Private"
+                        });
                 });
 
             modelBuilder.Entity("ProjectsManagement.Storage.Adapters.Model.InvitationStatus", b =>
@@ -347,6 +432,23 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasName("PK_InvitationStatuses");
 
                     b.ToTable("InvitationStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Accepted"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Pending"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Rejected"
+                        });
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>

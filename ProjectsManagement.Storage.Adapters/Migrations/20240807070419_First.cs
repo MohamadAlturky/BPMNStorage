@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ProjectsManagement.Storage.Adapters.Migrations
 {
     /// <inheritdoc />
@@ -184,8 +186,8 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                     Message = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Contributor = table.Column<int>(type: "integer", nullable: false),
-                    InvitationStatus = table.Column<int>(type: "integer", nullable: false),
-                    Project = table.Column<int>(type: "integer", nullable: false)
+                    Project = table.Column<int>(type: "integer", nullable: false),
+                    InvitationStatus = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,6 +257,66 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         principalTable: "Activity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ActivityResourceType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Image" },
+                    { 2, "Diagram" },
+                    { 3, "Process Description" },
+                    { 4, "Pdf" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ActivityType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Merged" },
+                    { 2, "Initialized" },
+                    { 3, "Updated" },
+                    { 4, "Closed" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ContributionType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Owner" },
+                    { 2, "Contributor" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "InvitationStatus",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Accepted" },
+                    { 2, "Rejected" },
+                    { 3, "Pending" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProjectType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Public" },
+                    { 2, "Private" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TaskStatus",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "On Working" },
+                    { 2, "Failed" },
+                    { 3, "Finished" }
                 });
 
             migrationBuilder.CreateIndex(
