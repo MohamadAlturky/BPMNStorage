@@ -36,6 +36,15 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+app.MapGet("/api/header", (HttpContext httpContext) =>
+{
+    const string headerName = "HeaderName";
+    if (httpContext.Request.Headers.TryGetValue(headerName, out var headerValue))
+    {
+        return Results.Ok(headerValue.ToString());
+    }
+    return Results.BadRequest($"Header '{headerName}' not found");
+});
 app.Run();
 
 internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

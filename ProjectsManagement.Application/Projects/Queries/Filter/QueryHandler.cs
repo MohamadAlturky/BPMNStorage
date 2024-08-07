@@ -33,7 +33,7 @@ public class FilterProjectQueryHandler : IQueryHandler<FilterProjectQuery, Pagin
 
             var paginatedResponse = await _projectRepository.Filter(request.Filter);
 
-            _logger.LogInformation("Successfully filtered projects. Total items: {TotalItems}", paginatedResponse.TotalItems);
+            _logger.LogInformation("Successfully filtered projects. Total items: {TotalItems}", paginatedResponse.TotalCount);
 
             return Result.Success(paginatedResponse);
         }

@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ProjectsManagement.Core\ProjectsManagement.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Activities\" />
-  </ItemGroup>
-
 </Project>

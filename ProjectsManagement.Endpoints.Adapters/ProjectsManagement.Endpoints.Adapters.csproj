@@ -1,37 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Activities\Create\" />
-    <Folder Include="Activities\Delete\" />
-    <Folder Include="Activities\Filter\" />
-    <Folder Include="Activities\GetById\" />
-    <Folder Include="Activities\Update\" />
-    <Folder Include="Contributions\Create\" />
-    <Folder Include="Contributions\Delete\" />
-    <Folder Include="Contributions\Filter\" />
-    <Folder Include="Contributions\GetById\" />
-    <Folder Include="Contributions\Update\" />
-    <Folder Include="Invitations\Create\" />
-    <Folder Include="Invitations\Delete\" />
-    <Folder Include="Invitations\Filter\" />
-    <Folder Include="Invitations\GetById\" />
-    <Folder Include="Invitations\Update\" />
-    <Folder Include="Projects\Create\" />
-    <Folder Include="Projects\Delete\" />
-    <Folder Include="Projects\Filter\" />
-    <Folder Include="Projects\GetById\" />
-    <Folder Include="Projects\Update\" />
-    <Folder Include="ProjectTasks\Create\" />
-    <Folder Include="ProjectTasks\Delete\" />
-    <Folder Include="ProjectTasks\Filter\" />
-    <Folder Include="ProjectTasks\GetById\" />
-    <Folder Include="ProjectTasks\Update\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Carter" Version="8.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ProjectsManagement.Contracts\ProjectsManagement.Contracts.csproj" />
+		<ProjectReference Include="..\ProjectsManagement.Core\ProjectsManagement.Core.csproj" />
+		<ProjectReference Include="..\ProjectsManagement.SharedKernel\ProjectsManagement.SharedKernel.csproj" />
+	</ItemGroup>
 
 </Project>

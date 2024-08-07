@@ -1,6 +1,16 @@
-@ProjectsManagement.Api.Adapters_HostAddress = http://localhost:5005
+### Get header value (with header)
+GET http://localhost:5005/api/header
+HeaderName: MyCustomHeaderValue
 
-GET {{ProjectsManagement.Api.Adapters_HostAddress}}/weatherforecast/
-Accept: application/json
+### Get header value (without header)
+GET http://localhost:5005/api/header
 
-###
+### Get header value (with different header value)
+GET http://localhost:5005/api/header
+HeaderName: AnotherHeaderValue
+
+### Get header value (with multiple headers)
+GET http://localhost:5005/api/header
+HeaderName: MultipleHeaderTest
+Content-Type: application/json
+Authorization: Bearer mytoken123

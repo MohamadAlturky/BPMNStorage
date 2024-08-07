@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Activities\" />
-    <Folder Include="Contributions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ProjectsManagement.Contracts\ProjectsManagement.Contracts.csproj" />
     <ProjectReference Include="..\ProjectsManagement.Core\ProjectsManagement.Core.csproj" />
     <ProjectReference Include="..\ProjectsManagement.SharedKernel\ProjectsManagement.SharedKernel.csproj" />
