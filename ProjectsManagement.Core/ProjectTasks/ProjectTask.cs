@@ -1,9 +1,10 @@
-﻿using ProjectsManagement.Core.Projects;
+﻿using ProjectsManagement.Core.Common;
+using ProjectsManagement.Core.Projects;
 using ProjectsManagement.SharedKernel.Contracts.Entities;
 
 namespace ProjectsManagement.Core.ProjectTasks;
 
-public class ProjectTask : EntityBase
+public class ProjectTask : ResourceEntityBase
 {
 
     public string Name { get; set; } = null!;
@@ -16,4 +17,5 @@ public class ProjectTask : EntityBase
 
     public Project ProjectNavigation { get; set; } = null!;
     public ProjectTaskStatus TaskStatusNavigation { get; set; } = null!;
+
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectsManagement.Application.Users;
 using ProjectsManagement.Core.Contributions;
 using ProjectsManagement.Core.Projects.Repositories;
 using ProjectsManagement.SharedKernel.Pagination;
@@ -9,8 +10,12 @@ namespace ProjectsManagement.Infrastructure.Repositories
 {
     public class ContributionMemberRepositoryAdapter : BaseRepository<ContributionMember, ContributionMemberFilter>, IContributionMemberRepositoryPort
     {
-        public ContributionMemberRepositoryAdapter(AppDbContext context) : base(context)
+        private readonly IUserIdentityPort _identityPort;
+
+        public ContributionMemberRepositoryAdapter(AppDbContext context,IUserIdentityPort identityPort) : base(context)
         {
+            _identityPort = identityPort;
+
         }
 
         public override async Task<ContributionMember?> GetByIdAsync(int id)
@@ -24,10 +29,16 @@ namespace ProjectsManagement.Infrastructure.Repositories
 
         public override async Task<PaginatedResponse<ContributionMember>> Filter(Action<ContributionMemberFilter> filterAction)
         {
+            int contibutor = await _identityPort.GetUserIdAsync();
+
             var filter = new ContributionMemberFilter();
             filterAction(filter);
 
             var query = _context.ContributionMembers.AsQueryable();
+
+
+            query  = query.AsSplitQuery().Where(c=>c.Contributor == contibutor);
+
 
             // Apply filters
             if (filter.Id.HasValue)

@@ -1,8 +1,9 @@
 using Carter;
+using ProjectsManagement.Api.Adapters.AssemblyReference;
+using ProjectsManagement.Api.Adapters.Middlewares;
 using ProjectsManagement.Application.AssemblyReference;
 using ProjectsManagement.Application.Users;
 using ProjectsManagement.Endpoints.Adapters.AssemblyReference;
-using ProjectsManagement.Identity.Adapters;
 using ProjectsManagement.Identity.Adapters.AssemblyReference;
 using ProjectsManagement.SharedKernel.DependencyInjection.Scanner;
 using ProjectsManagement.Storage.Adapters.AssemblyReference;
@@ -10,16 +11,13 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient<IUserIdentityPort, UserIdentityAdapter>();
 
 Assembly[] assemblies = [
         typeof(ApplicationAssemblyReference).Assembly,
         typeof(StorageAdaptersAssemblyReference).Assembly,
         typeof(EndpointsAssemblyReference).Assembly,
-        typeof(IdentityAssemblyReference).Assembly
+        typeof(IdentityAssemblyReference).Assembly,
+        typeof(APIAssemblyReference).Assembly,
 ];
 
 builder.Services.RegisterServices(builder.Configuration, assemblies);
@@ -28,12 +26,11 @@ builder.Services.RegisterServices(builder.Configuration, assemblies);
 
 var app = builder.Build();
 
+app.UseMiddleware<AuthenticationCheckerMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.MapCarter();
 
 app.UseHttpsRedirection();

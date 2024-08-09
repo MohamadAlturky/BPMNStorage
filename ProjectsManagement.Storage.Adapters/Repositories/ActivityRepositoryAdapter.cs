@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectsManagement.Application.Users;
 using ProjectsManagement.Core.Activities;
 using ProjectsManagement.Core.Activities.Repositories;
 using ProjectsManagement.SharedKernel.Pagination;
@@ -9,8 +10,10 @@ namespace ProjectsManagement.Infrastructure.Repositories
 {
     public class ActivityRepositoryAdapter : BaseRepository<Activity, ActivityFilter>, IActivityRepositoryPort
     {
-        public ActivityRepositoryAdapter(AppDbContext context) : base(context)
+        private readonly IUserIdentityPort _identityPort;
+        public ActivityRepositoryAdapter(AppDbContext context, IUserIdentityPort identityPort) : base(context)
         {
+            _identityPort = identityPort;
         }
 
         public override async Task<Activity?> GetByIdAsync(int id)
@@ -26,10 +29,19 @@ namespace ProjectsManagement.Infrastructure.Repositories
 
         public override async Task<PaginatedResponse<Activity>> Filter(Action<ActivityFilter> filterAction)
         {
+            int contibutor = await _identityPort.GetUserIdAsync();
+
             var filter = new ActivityFilter();
             filterAction(filter);
 
             var query = _context.Activities.AsQueryable();
+
+
+            query  = query.AsSplitQuery()
+                .Include(e => e.ProjectNavigation)
+                .ThenInclude(p => p.ContributionMembers.Where(c => c.Project == p.Id && c.Contributor == contibutor));
+
+            query = query.Where(e =>e.ProjectNavigation.ContributionMembers.Where(c=>c.Contributor == contibutor).Count() != 0);
 
             // Apply filters
             if (filter.Id.HasValue)

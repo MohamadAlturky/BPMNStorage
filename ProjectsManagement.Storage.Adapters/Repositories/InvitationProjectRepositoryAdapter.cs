@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectsManagement.Application.Users;
 using ProjectsManagement.Core.Invitations;
 using ProjectsManagement.Core.Projects;
 using ProjectsManagement.Core.Projects.Repositories;
@@ -10,8 +11,12 @@ namespace ProjectsManagement.Infrastructure.Repositories;
 
 public class InvitationRepositoryAdapter : BaseRepository<Invitation, InvitationFilter>, IInvitationRepositoryPort
 {
-    public InvitationRepositoryAdapter(AppDbContext context) : base(context)
+    private readonly IUserIdentityPort _identityPort;
+
+    public InvitationRepositoryAdapter(AppDbContext context,IUserIdentityPort identityPort) : base(context)
     {
+        _identityPort = identityPort;
+
     }
     public override async Task<Invitation?> GetByIdAsync(int id)
     {
@@ -24,10 +29,19 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 
     public override async Task<PaginatedResponse<Invitation>> Filter(Action<InvitationFilter> filterAction)
     {
+        int contibutor = await _identityPort.GetUserIdAsync();
+
         var filter = new InvitationFilter();
         filterAction(filter);
 
         var query = _context.Invitations.AsQueryable();
+
+
+        query  = query.AsSplitQuery()
+            .Include(e => e.ProjectNavigation)
+            .ThenInclude(p => p.ContributionMembers.Where(c => c.Project == p.Id && c.Contributor == contibutor));
+
+        query = query.Where(e => e.ProjectNavigation.ContributionMembers.Where(c => c.Contributor == contibutor).Count() != 0);
 
         // Apply filters
         if (filter.Id.HasValue)

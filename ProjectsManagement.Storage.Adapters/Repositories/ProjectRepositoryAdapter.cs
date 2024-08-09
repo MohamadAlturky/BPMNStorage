@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectsManagement.Application.Users;
+using ProjectsManagement.Core.Contributions;
 using ProjectsManagement.Core.Projects;
 using ProjectsManagement.Core.Projects.Repositories;
 using ProjectsManagement.SharedKernel.Pagination;
@@ -9,8 +11,12 @@ namespace ProjectsManagement.Infrastructure.Repositories;
 
 public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, IProjectRepositoryPort
 {
-    public ProjectRepositoryAdapter(AppDbContext context) : base(context)
+    private readonly IUserIdentityPort _identityPort;
+
+    public ProjectRepositoryAdapter(AppDbContext context, IUserIdentityPort identityPort) : base(context)
     {
+        _identityPort = identityPort;
+
     }
     public override async Task<Project?> GetByIdAsync(int id)
     {
@@ -25,10 +31,18 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
 
     public override async Task<PaginatedResponse<Project>> Filter(Action<ProjectFilter> filter)
     {
+        int contributor = await _identityPort.GetUserIdAsync();
+
         var projectFilter = new ProjectFilter();
         filter(projectFilter);
 
         var query = _context.Projects.AsQueryable();
+
+
+        query  = query.AsSplitQuery()
+            .Include(p => p.ContributionMembers);
+        
+        query = query.Where(p => p.ContributionMembers.Any(cm => cm.Contributor == contributor));
 
         // Apply filters
         if (projectFilter.Id.HasValue)
@@ -40,7 +54,7 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
         
 
         // Apply ordering
-        if (projectFilter.OrderByIdDescending)
+        //if (projectFilter.OrderByIdDescending)
             query = query.OrderByDescending(p => p.Id);
 
         if (projectFilter.OrderByIdAscending)
@@ -56,9 +70,12 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
         // Apply includes
         if (projectFilter.IncludeActivities)
             query = query.Include(p => p.Activities);
-        
+
+        if (projectFilter.IncludeProjectType)
+            query = query.Include(p => p.ProjectTypeNavigation);
+
         if (projectFilter.IncludeContributionMembers)
-            query = query.Include(p => p.ContributionMembers);
+            query = query.Include(p => p.ContributionMembers).ThenInclude(f=>f.ContributionTypeNavigation);
         
         if (projectFilter.IncludeInvitations)
             query = query.Include(p => p.Invitations);
@@ -79,8 +96,32 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
         {
             query = query.Take(projectFilter.Count.Value);
         }
+        //query = query.Include(e => e.ContributionMembers).ThenInclude(e => e.ContributionTypeNavigation);
 
         var items = await query.ToListAsync();
+
+
+        HashSet<int> ids = [];
+        if (projectFilter.IncludeContributionMembers)
+        {
+            foreach(var item in items)
+            {
+                foreach(var member in item.ContributionMembers)
+                {
+                    ids.Add(member.Contributor);
+                }
+            }
+            HashSet<ContributorInfo> infos = await _identityPort.GetUsersAsync(ids);
+            
+            foreach (var item in items)
+            {
+                foreach (var member in item.ContributionMembers)
+                {
+                    member.ContributorInfo = infos.FirstOrDefault(e=>e.Id == member.Contributor);
+                }
+            }
+        }
+
 
         return new PaginatedResponse<Project>
         {

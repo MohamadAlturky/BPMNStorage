@@ -12,7 +12,7 @@ public class GetActivityByIdQuery : IQuery<Activity>
 
         return new()
         {
-            Activity = Id
+            //Activity = Id
         };
     }
 }

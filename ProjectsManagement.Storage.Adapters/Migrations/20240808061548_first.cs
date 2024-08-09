@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectsManagement.Storage.Adapters.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -79,6 +79,19 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Resources",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Resources", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TaskStatus",
                 columns: table => new
                 {
@@ -95,8 +108,7 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Project",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     ProjectType = table.Column<int>(type: "int", nullable: false)
@@ -104,6 +116,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Project", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Project_Resources_Id",
+                        column: x => x.Id,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Projects_ProjectTypes_ProjectTypeId",
                         column: x => x.ProjectType,
@@ -115,8 +133,7 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Activity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -127,6 +144,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Activity_Resources_Id",
+                        column: x => x.Id,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProjectActivities_ProjectActivityResourceTypes_ProjectActivityResourceTypeId",
                         column: x => x.ActivityResourceType,
@@ -148,8 +171,7 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ContributionMember",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Project = table.Column<int>(type: "int", nullable: false),
                     Contributor = table.Column<int>(type: "int", nullable: false),
                     ContributionType = table.Column<int>(type: "int", nullable: false),
@@ -158,6 +180,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ContributionMember", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContributionMember_Resources_Id",
+                        column: x => x.Id,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ContributionMembers_ContributionTypes_ContributionTypeId",
                         column: x => x.ContributionType,
@@ -174,17 +202,23 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Invitation",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Contributor = table.Column<int>(type: "int", nullable: false),
+                    By = table.Column<int>(type: "int", nullable: false),
                     Project = table.Column<int>(type: "int", nullable: false),
                     InvitationStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Invitation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitation_Resources_Id",
+                        column: x => x.Id,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Invitations_InvitationStatuses_InvitationStatusId",
                         column: x => x.InvitationStatus,
@@ -201,8 +235,7 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Task",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     Project = table.Column<int>(type: "int", nullable: false),
@@ -221,6 +254,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         column: x => x.Project,
                         principalTable: "Project",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Task_Resources_Id",
+                        column: x => x.Id,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -403,6 +442,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             migrationBuilder.DropTable(
                 name: "Project");
+
+            migrationBuilder.DropTable(
+                name: "Resources");
 
             migrationBuilder.DropTable(
                 name: "ProjectType");

@@ -12,8 +12,8 @@ using ProjectsManagement.Storage.Adapters.Context;
 namespace ProjectsManagement.Storage.Adapters.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240807170809_First")]
-    partial class First
+    [Migration("20240808061548_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,49 +24,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ActivityResourceType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ActivityType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<int>("Project")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "ActivityResourceType" }, "IX_ProjectActivities_ProjectActivityResourceTypeId");
-
-                    b.HasIndex(new[] { "ActivityType" }, "IX_ProjectActivities_ProjectActivityTypeId");
-
-                    b.HasIndex(new[] { "Project" }, "IX_ProjectActivities_ProjectId");
-
-                    b.ToTable("Activity", (string)null);
-                });
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.ActivityPrecedent", b =>
                 {
@@ -176,7 +133,7 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ProjectsManagement.Core.Contributions.ContributionMember", b =>
+            modelBuilder.Entity("ProjectsManagement.Core.Common.ResourceEntityBase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,25 +141,14 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ContributionType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Contributor")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Project")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ContributionType" }, "IX_ContributionMembers_ContributionTypeId");
+                    b.ToTable("Resources");
 
-                    b.HasIndex(new[] { "Project" }, "IX_ContributionMembers_ProjectId");
-
-                    b.ToTable("ContributionMember", (string)null);
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Contributions.ContributionType", b =>
@@ -235,76 +181,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                             Id = 1,
                             Name = "Owner"
                         });
-                });
-
-            modelBuilder.Entity("ProjectsManagement.Core.Invitations.Invitation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Contributor")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InvitationStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<int>("Project")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "InvitationStatus" }, "IX_Invitations_InvitationStatusId");
-
-                    b.HasIndex(new[] { "Project" }, "IX_Invitations_ProjectId");
-
-                    b.ToTable("Invitation", (string)null);
-                });
-
-            modelBuilder.Entity("ProjectsManagement.Core.ProjectTasks.ProjectTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<int>("Project")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TaskStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Project" }, "IX_ProjectTasks_ProjectId");
-
-                    b.HasIndex(new[] { "TaskStatus" }, "IX_ProjectTasks_ProjectTaskStatusId");
-
-                    b.ToTable("Task", (string)null);
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.ProjectTasks.ProjectTaskStatus", b =>
@@ -342,36 +218,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                             Id = 1,
                             Name = "On Working"
                         });
-                });
-
-            modelBuilder.Entity("ProjectsManagement.Core.Projects.Project", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<int>("ProjectType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "ProjectType" }, "IX_Projects_ProjectTypeId");
-
-                    b.ToTable("Project", (string)null);
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Projects.ProjectType", b =>
@@ -445,32 +291,147 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>
                 {
-                    b.HasOne("ProjectsManagement.Core.Activities.ActivityResourceType", "ActivityResourceTypeNavigation")
-                        .WithMany("Activities")
-                        .HasForeignKey("ActivityResourceType")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasBaseType("ProjectsManagement.Core.Common.ResourceEntityBase");
+
+                    b.Property<int>("ActivityResourceType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActivityType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasConstraintName("FK_ProjectActivities_ProjectActivityResourceTypes_ProjectActivityResourceTypeId");
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)");
 
-                    b.HasOne("ProjectsManagement.Core.Activities.ActivityType", "ActivityTypeNavigation")
-                        .WithMany("Activities")
-                        .HasForeignKey("ActivityType")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasConstraintName("FK_ProjectActivities_ProjectActivityTypes_ProjectActivityTypeId");
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
-                    b.HasOne("ProjectsManagement.Core.Projects.Project", "ProjectNavigation")
-                        .WithMany("Activities")
-                        .HasForeignKey("Project")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.Property<int>("Project")
+                        .HasColumnType("int");
+
+                    b.HasIndex(new[] { "ActivityResourceType" }, "IX_ProjectActivities_ProjectActivityResourceTypeId");
+
+                    b.HasIndex(new[] { "ActivityType" }, "IX_ProjectActivities_ProjectActivityTypeId");
+
+                    b.HasIndex(new[] { "Project" }, "IX_ProjectActivities_ProjectId");
+
+                    b.ToTable("Activity", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectsManagement.Core.Contributions.ContributionMember", b =>
+                {
+                    b.HasBaseType("ProjectsManagement.Core.Common.ResourceEntityBase");
+
+                    b.Property<int>("ContributionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Contributor")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Project")
+                        .HasColumnType("int");
+
+                    b.HasIndex(new[] { "ContributionType" }, "IX_ContributionMembers_ContributionTypeId");
+
+                    b.HasIndex(new[] { "Project" }, "IX_ContributionMembers_ProjectId");
+
+                    b.ToTable("ContributionMember", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectsManagement.Core.Invitations.Invitation", b =>
+                {
+                    b.HasBaseType("ProjectsManagement.Core.Common.ResourceEntityBase");
+
+                    b.Property<int>("By")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Contributor")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvitationStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
                         .IsRequired()
-                        .HasConstraintName("FK_ProjectActivities_Projects_ProjectId");
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)");
 
-                    b.Navigation("ActivityResourceTypeNavigation");
+                    b.Property<int>("Project")
+                        .HasColumnType("int");
 
-                    b.Navigation("ActivityTypeNavigation");
+                    b.HasIndex(new[] { "InvitationStatus" }, "IX_Invitations_InvitationStatusId");
 
-                    b.Navigation("ProjectNavigation");
+                    b.HasIndex(new[] { "Project" }, "IX_Invitations_ProjectId");
+
+                    b.ToTable("Invitation", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectsManagement.Core.ProjectTasks.ProjectTask", b =>
+                {
+                    b.HasBaseType("ProjectsManagement.Core.Common.ResourceEntityBase");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("Project")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaskStatus")
+                        .HasColumnType("int");
+
+                    b.HasIndex(new[] { "Project" }, "IX_ProjectTasks_ProjectId");
+
+                    b.HasIndex(new[] { "TaskStatus" }, "IX_ProjectTasks_ProjectTaskStatusId");
+
+                    b.ToTable("Task", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectsManagement.Core.Projects.Project", b =>
+                {
+                    b.HasBaseType("ProjectsManagement.Core.Common.ResourceEntityBase");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("ProjectType")
+                        .HasColumnType("int");
+
+                    b.HasIndex(new[] { "ProjectType" }, "IX_Projects_ProjectTypeId");
+
+                    b.ToTable("Project", (string)null);
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.ActivityPrecedent", b =>
@@ -494,6 +455,42 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                     b.Navigation("PrecedentNavigation");
                 });
 
+            modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>
+                {
+                    b.HasOne("ProjectsManagement.Core.Activities.ActivityResourceType", "ActivityResourceTypeNavigation")
+                        .WithMany("Activities")
+                        .HasForeignKey("ActivityResourceType")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_ProjectActivities_ProjectActivityResourceTypes_ProjectActivityResourceTypeId");
+
+                    b.HasOne("ProjectsManagement.Core.Activities.ActivityType", "ActivityTypeNavigation")
+                        .WithMany("Activities")
+                        .HasForeignKey("ActivityType")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_ProjectActivities_ProjectActivityTypes_ProjectActivityTypeId");
+
+                    b.HasOne("ProjectsManagement.Core.Common.ResourceEntityBase", null)
+                        .WithOne()
+                        .HasForeignKey("ProjectsManagement.Core.Activities.Activity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectsManagement.Core.Projects.Project", "ProjectNavigation")
+                        .WithMany("Activities")
+                        .HasForeignKey("Project")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_ProjectActivities_Projects_ProjectId");
+
+                    b.Navigation("ActivityResourceTypeNavigation");
+
+                    b.Navigation("ActivityTypeNavigation");
+
+                    b.Navigation("ProjectNavigation");
+                });
+
             modelBuilder.Entity("ProjectsManagement.Core.Contributions.ContributionMember", b =>
                 {
                     b.HasOne("ProjectsManagement.Core.Contributions.ContributionType", "ContributionTypeNavigation")
@@ -502,6 +499,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_ContributionMembers_ContributionTypes_ContributionTypeId");
+
+                    b.HasOne("ProjectsManagement.Core.Common.ResourceEntityBase", null)
+                        .WithOne()
+                        .HasForeignKey("ProjectsManagement.Core.Contributions.ContributionMember", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ProjectsManagement.Core.Projects.Project", "ProjectNavigation")
                         .WithMany("ContributionMembers")
@@ -517,6 +520,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             modelBuilder.Entity("ProjectsManagement.Core.Invitations.Invitation", b =>
                 {
+                    b.HasOne("ProjectsManagement.Core.Common.ResourceEntityBase", null)
+                        .WithOne()
+                        .HasForeignKey("ProjectsManagement.Core.Invitations.Invitation", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProjectsManagement.Storage.Adapters.Model.InvitationStatus", "InvitationStatusNavigation")
                         .WithMany("Invitations")
                         .HasForeignKey("InvitationStatus")
@@ -538,6 +547,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             modelBuilder.Entity("ProjectsManagement.Core.ProjectTasks.ProjectTask", b =>
                 {
+                    b.HasOne("ProjectsManagement.Core.Common.ResourceEntityBase", null)
+                        .WithOne()
+                        .HasForeignKey("ProjectsManagement.Core.ProjectTasks.ProjectTask", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProjectsManagement.Core.Projects.Project", "ProjectNavigation")
                         .WithMany("Tasks")
                         .HasForeignKey("Project")
@@ -559,6 +574,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             modelBuilder.Entity("ProjectsManagement.Core.Projects.Project", b =>
                 {
+                    b.HasOne("ProjectsManagement.Core.Common.ResourceEntityBase", null)
+                        .WithOne()
+                        .HasForeignKey("ProjectsManagement.Core.Projects.Project", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProjectsManagement.Core.Projects.ProjectType", "ProjectTypeNavigation")
                         .WithMany("Projects")
                         .HasForeignKey("ProjectType")
@@ -567,13 +588,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasConstraintName("FK_Projects_ProjectTypes_ProjectTypeId");
 
                     b.Navigation("ProjectTypeNavigation");
-                });
-
-            modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>
-                {
-                    b.Navigation("ActivityPrecedentActivityNavigations");
-
-                    b.Navigation("ActivityPrecedentPrecedentNavigations");
                 });
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.ActivityResourceType", b =>
@@ -596,6 +610,23 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                     b.Navigation("Tasks");
                 });
 
+            modelBuilder.Entity("ProjectsManagement.Core.Projects.ProjectType", b =>
+                {
+                    b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("ProjectsManagement.Storage.Adapters.Model.InvitationStatus", b =>
+                {
+                    b.Navigation("Invitations");
+                });
+
+            modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>
+                {
+                    b.Navigation("ActivityPrecedentActivityNavigations");
+
+                    b.Navigation("ActivityPrecedentPrecedentNavigations");
+                });
+
             modelBuilder.Entity("ProjectsManagement.Core.Projects.Project", b =>
                 {
                     b.Navigation("Activities");
@@ -605,16 +636,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                     b.Navigation("Invitations");
 
                     b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("ProjectsManagement.Core.Projects.ProjectType", b =>
-                {
-                    b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("ProjectsManagement.Storage.Adapters.Model.InvitationStatus", b =>
-                {
-                    b.Navigation("Invitations");
                 });
 #pragma warning restore 612, 618
         }

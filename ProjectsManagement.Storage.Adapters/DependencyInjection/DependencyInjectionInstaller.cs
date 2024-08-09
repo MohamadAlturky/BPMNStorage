@@ -21,7 +21,10 @@ public class DependencyInjectionInstaller : IDependencyInjectionInstaller
         services.AddScoped<IProjectRepositoryPort, ProjectRepositoryAdapter>();
         services.AddScoped<IProjectTaskRepositoryPort, ProjectTaskRepositoryAdapter>();
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        {
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        });
 
     }
 }

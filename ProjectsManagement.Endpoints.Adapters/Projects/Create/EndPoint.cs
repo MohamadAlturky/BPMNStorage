@@ -24,7 +24,11 @@ public class CreateProjectEndpoint : ICarterModule
             };
             var result = await sender.Send(command);
             return result.IsSuccess
-                ? Results.Created($"/api/projects/{result.Value.Id}", result.Value)
+                ? Results.Created($"/api/projects/{result.Value.Id}", new
+                {
+                    Id = result.Value.Id,
+                    Name = result.Value.Name
+                })
                 : Results.BadRequest(result.Error);
         })
         .WithName("CreateProject")

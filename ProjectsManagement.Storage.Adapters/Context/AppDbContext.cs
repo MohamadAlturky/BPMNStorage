@@ -1,20 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectsManagement.Application.Users;
 using ProjectsManagement.Core.Activities;
+using ProjectsManagement.Core.Common;
 using ProjectsManagement.Core.Constants;
 using ProjectsManagement.Core.Contributions;
 using ProjectsManagement.Core.Invitations;
 using ProjectsManagement.Core.Projects;
 using ProjectsManagement.Core.ProjectTasks;
-using ProjectsManagement.SharedKernel.Contracts.Entities;
 using ProjectsManagement.Storage.Adapters.Model;
 
 namespace ProjectsManagement.Storage.Adapters.Context;
 
 public partial class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options, IUserIdentityPort identityPort) : base(options)
+    {
+        _identityPort = identityPort;
+    }
+    private readonly IUserIdentityPort _identityPort;
     public AppDbContext() : base() { }
+    private int _contributor { get; set; }
+
     public virtual DbSet<Activity> Activities { get; set; }
+    public virtual DbSet<ResourceEntityBase> Resources { get; set; }
 
     public virtual DbSet<ActivityPrecedent> ActivityPrecedents { get; set; }
 
@@ -46,17 +54,23 @@ public partial class AppDbContext : DbContext
         //}
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=BPPMDN;Trusted_Connection=True; Encrypt=False;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        _contributor = 0;
+
+        modelBuilder.Entity<ResourceEntityBase>(entity =>
+        {
+            entity.HasQueryFilter(e=>e.IsActive == true);
+        });
+
         modelBuilder.Entity<Activity>(entity =>
         {
             //entity.HasKey(e => e.Id).HasName("PK_ProjectActivities");
 
             entity.ToTable("Activity");
-
             entity.HasIndex(e => e.ActivityResourceType, "IX_ProjectActivities_ProjectActivityResourceTypeId");
 
             entity.HasIndex(e => e.ActivityType, "IX_ProjectActivities_ProjectActivityTypeId");
@@ -236,6 +250,7 @@ public partial class AppDbContext : DbContext
             //entity.HasKey(e => e.Id).HasName("PK_ProjectTasks");
 
             entity.ToTable("Task");
+
 
             entity.HasIndex(e => e.Project, "IX_ProjectTasks_ProjectId");
 

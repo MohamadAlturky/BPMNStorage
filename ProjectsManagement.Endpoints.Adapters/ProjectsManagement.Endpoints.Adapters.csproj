@@ -13,6 +13,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ProjectsManagement.Contracts\ProjectsManagement.Contracts.csproj" />
 		<ProjectReference Include="..\ProjectsManagement.Core\ProjectsManagement.Core.csproj" />
+		<ProjectReference Include="..\ProjectsManagement.Representer.Adapters\ProjectsManagement.Representer.Adapters.csproj" />
 		<ProjectReference Include="..\ProjectsManagement.SharedKernel\ProjectsManagement.SharedKernel.csproj" />
 	</ItemGroup>
 

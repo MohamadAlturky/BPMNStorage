@@ -4,20 +4,26 @@ using ProjectsManagement.SharedKernel.CQRS;
 using Microsoft.Extensions.Logging;
 using ProjectsManagement.Core.Projects.Repositories;
 using ProjectsManagement.Contracts.Projects.Commands.Create;
+using ProjectsManagement.Application.Users;
+using ProjectsManagement.Core.Contributions;
+using ProjectsManagement.Core.Constants;
 
 namespace ProjectsManagement.Application.Projects.Commands.Create;
 
 public class CreateProjectCommandHandler : ICommandHandler<CreateProjectCommand, Project>
 {
     private readonly IProjectRepositoryPort _projectRepository;
+    private readonly IUserIdentityPort _identityPort;
+    private readonly IContributionMemberRepositoryPort _memberRepositoryPort;
     private readonly ILogger<CreateProjectCommandHandler> _logger;
 
-    public CreateProjectCommandHandler(
-        IProjectRepositoryPort projectRepository,
-        ILogger<CreateProjectCommandHandler> logger)
+    public CreateProjectCommandHandler(IProjectRepositoryPort projectRepository, IUserIdentityPort identityPort, 
+        IContributionMemberRepositoryPort memberRepositoryPort, ILogger<CreateProjectCommandHandler> logger)
     {
-        _projectRepository = projectRepository;
-        _logger = logger;
+        _projectRepository=projectRepository;
+        _identityPort=identityPort;
+        _memberRepositoryPort=memberRepositoryPort;
+        _logger=logger;
     }
 
     public async Task<Result<Project>> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
@@ -40,6 +46,14 @@ public class CreateProjectCommandHandler : ICommandHandler<CreateProjectCommand,
         try
         {
             var createdProject = await _projectRepository.AddAsync(project);
+            ContributionMember member = new() 
+            {
+                ContributionType = ConstantsProvider.OWNER.Id,
+                Date = DateTime.UtcNow,
+                Contributor = await _identityPort.GetUserIdAsync(),
+                Project = createdProject.Id
+            };
+            await _memberRepositoryPort.AddAsync(member);
             _logger.LogInformation("Created new project with ID: {ProjectId}", createdProject.Id);
 
 

@@ -12,7 +12,7 @@ public class DeleteActivityCommand : ICommand
     {
         return new()
         {
-            Activity = Id
+            //Activity = Id
         };
     }
 }

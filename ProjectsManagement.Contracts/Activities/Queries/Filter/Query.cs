@@ -17,7 +17,7 @@ public class FilterActivityQuery : IQuery<PaginatedResponse<Activity>>
 
         return new()
         {
-            Project = activityFilter.Project
+            //Project = activityFilter.Project
         };
     }
 }

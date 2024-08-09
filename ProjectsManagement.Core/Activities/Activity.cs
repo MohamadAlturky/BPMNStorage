@@ -1,10 +1,11 @@
-﻿using ProjectsManagement.Core.Projects;
+﻿using ProjectsManagement.Core.Common;
+using ProjectsManagement.Core.Projects;
 using ProjectsManagement.SharedKernel.Contracts.Entities;
 
 namespace ProjectsManagement.Core.Activities;
 
 
-public partial class Activity : EntityBase
+public partial class Activity : ResourceEntityBase
 {
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;

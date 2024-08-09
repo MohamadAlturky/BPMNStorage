@@ -22,8 +22,7 @@ public class UpdateActivityCommand : ICommand<Activity>
     {
         return new()
         {
-            Activity = Id,
-            Project = Project
+          
         };
     }
 }

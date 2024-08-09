@@ -24,5 +24,6 @@ public  class ProjectFilter : IFilter
     public bool IncludeContributionMembers { get; set; } = false;
     public bool IncludeInvitations { get; set; } = false;
     public bool IncludeTasks { get; set; } = false;
+    public bool IncludeProjectType { get; set; } = false;
 
 }

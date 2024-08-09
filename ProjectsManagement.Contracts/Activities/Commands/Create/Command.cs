@@ -17,7 +17,7 @@ public class CreateActivityCommand : ICommand<Activity>
     {
         return new()
         {
-            Project = Project
+            //Project = Project
         };
     }
 }

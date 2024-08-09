@@ -1,4 +1,5 @@
 ﻿using ProjectsManagement.Core.Activities;
+using ProjectsManagement.Core.Common;
 using ProjectsManagement.Core.Contributions;
 using ProjectsManagement.Core.Invitations;
 using ProjectsManagement.Core.ProjectTasks;
@@ -6,7 +7,7 @@ using ProjectsManagement.SharedKernel.Contracts.Entities;
 
 namespace ProjectsManagement.Core.Projects;
 
-public  class Project : EntityBase
+public  class Project : ResourceEntityBase
 {
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;

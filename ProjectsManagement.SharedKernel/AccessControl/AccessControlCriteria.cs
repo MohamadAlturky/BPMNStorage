@@ -2,10 +2,17 @@
 
 public class AccessControlCriteria
 {
-    public int? ProjectType { get; set; }
-    public int? Invitation { get; set; }
-    public int? Project { get; set; }
-    public int? Activity { get; set; }
-    public int? ProjectTask { get; set; }
+    public int Id { get; set; }
     public int? ContributionType { get; set; }
+    public AccessedRecourceType AccessedRecourceType { get; set; }
+}
+
+
+public enum AccessedRecourceType
+{
+    PROJECT,
+    INVITATION,
+    ACTIVITY,
+    CONTRIBUTION_MEMBER,
+    TASK
 }
