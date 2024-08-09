@@ -36,6 +36,7 @@ public class CreateInvitationCommandHandler : ICommandHandler<CreateInvitationCo
             Date = request.Date,
             Contributor = request.Contributor,
             Project = request.Project,
+            By=request.By,
             InvitationStatus = request.InvitationStatus
         };
 

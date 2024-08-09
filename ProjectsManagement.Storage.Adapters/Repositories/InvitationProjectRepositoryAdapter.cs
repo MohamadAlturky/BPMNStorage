@@ -12,7 +12,7 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 {
     private readonly IUserIdentityPort _identityPort;
 
-    public InvitationRepositoryAdapter(AppDbContext context,IUserIdentityPort identityPort) : base(context)
+    public InvitationRepositoryAdapter(AppDbContext context, IUserIdentityPort identityPort) : base(context)
     {
         _identityPort = identityPort;
 
@@ -36,7 +36,7 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
         var query = _context.Invitations.AsQueryable();
 
 
-        query  = query.AsSplitQuery().Where(e => e.Contributor == contributor || e.By == contributor);
+        query  = query.AsSplitQuery().Where(e => (e.Contributor == contributor || e.By == contributor));
         // Apply filters
         if (filter.Id.HasValue)
             query = query.Where(p => p.Id == filter.Id);
@@ -46,7 +46,7 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 
         if (filter.Contributor.HasValue)
             query = query.Where(p => p.Contributor== filter.Contributor);
-        
+
         if (filter.InvitationStatus.HasValue)
             query = query.Where(p => p.InvitationStatus== filter.InvitationStatus);
 
@@ -65,13 +65,13 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 
 
         // Apply ordering
-        if (filter.OrderByIdDescending)
-            query = query.OrderByDescending(p => p.Id);
+
+        query = query.OrderByDescending(p => p.Id);
 
         if (filter.OrderByIdAscending)
             query = query.OrderBy(p => p.Id);
 
-        
+
         if (filter.OrderByContributorDescending)
             query = query.OrderByDescending(p => p.Contributor);
 
@@ -104,7 +104,7 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 
         // Apply includes
         if (filter.IncludeProject)
-            query = query.Include(p => p.ProjectNavigation).ThenInclude(p=>p.ProjectType);
+            query = query.Include(p => p.ProjectNavigation).ThenInclude(p => p.ProjectTypeNavigation);
 
         if (filter.IncludeInvitationStatus)
             query = query.Include(p => p.InvitationStatusNavigation);
@@ -132,5 +132,5 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
         };
     }
 }
-    
-    
+
+

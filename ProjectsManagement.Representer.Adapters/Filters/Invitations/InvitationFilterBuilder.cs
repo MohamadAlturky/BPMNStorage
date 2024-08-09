@@ -53,6 +53,10 @@ public class InvitationFilterBuilder : IInvitationFilterBuilder
 
             if (invitation.ProjectNavigation is not null)
             {
+                if(invitation.ProjectNavigation.ProjectTypeNavigation is not null)
+                {
+                    invitation.ProjectNavigation.ProjectTypeNavigation.Projects= [];
+                }
                 invitation.ProjectNavigation.Invitations = [];
             }
         }
