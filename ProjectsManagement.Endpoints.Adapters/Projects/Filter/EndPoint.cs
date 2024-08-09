@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using ProjectsManagement.Contracts.Projects.Queries.Filter;
 using ProjectsManagement.Core.Projects;
-using ProjectsManagement.Representer.Adapters.Actions;
+using ProjectsManagement.Representer.Adapters.Filters.Invitations;
+using ProjectsManagement.Representer.Adapters.Filters.Projects;
 using ProjectsManagement.SharedKernel.Pagination;
 
 namespace ProjectsManagement.API.Endpoints.Projects;

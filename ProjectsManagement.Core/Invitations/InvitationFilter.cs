@@ -12,6 +12,7 @@ public class InvitationFilter : IFilter
 
     public int? Contributor { get; set; }
     public int? Project { get; set; }
+    public int? By { get; set; }
     public int? InvitationStatus { get; set; }
 
     public DateTime? DateEquals { get; set; }

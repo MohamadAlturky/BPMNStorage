@@ -2,6 +2,7 @@
 using ProjectsManagement.Core.Projects;
 using ProjectsManagement.SharedKernel.Contracts.Entities;
 using ProjectsManagement.Storage.Adapters.Model;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectsManagement.Core.Invitations;
 

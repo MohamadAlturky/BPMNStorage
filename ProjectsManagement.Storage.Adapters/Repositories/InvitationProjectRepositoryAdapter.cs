@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectsManagement.Application.Users;
 using ProjectsManagement.Core.Invitations;
-using ProjectsManagement.Core.Projects;
 using ProjectsManagement.Core.Projects.Repositories;
 using ProjectsManagement.SharedKernel.Pagination;
 using ProjectsManagement.Storage.Adapters.Context;
@@ -29,7 +28,7 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 
     public override async Task<PaginatedResponse<Invitation>> Filter(Action<InvitationFilter> filterAction)
     {
-        int contibutor = await _identityPort.GetUserIdAsync();
+        int contributor = await _identityPort.GetUserIdAsync();
 
         var filter = new InvitationFilter();
         filterAction(filter);
@@ -37,16 +36,10 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
         var query = _context.Invitations.AsQueryable();
 
 
-        query  = query.AsSplitQuery()
-            .Include(e => e.ProjectNavigation)
-            .ThenInclude(p => p.ContributionMembers.Where(c => c.Project == p.Id && c.Contributor == contibutor));
-
-        query = query.Where(e => e.ProjectNavigation.ContributionMembers.Where(c => c.Contributor == contibutor).Count() != 0);
-
+        query  = query.AsSplitQuery().Where(e => e.Contributor == contributor || e.By == contributor);
         // Apply filters
         if (filter.Id.HasValue)
             query = query.Where(p => p.Id == filter.Id);
-
 
         if (filter.Project.HasValue)
             query = query.Where(p => p.Project== filter.Project);
@@ -57,6 +50,8 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
         if (filter.InvitationStatus.HasValue)
             query = query.Where(p => p.InvitationStatus== filter.InvitationStatus);
 
+        if (filter.By.HasValue)
+            query = query.Where(p => p.By == filter.By);
 
         // Date Equals
         if (filter.DateEquals.HasValue)
@@ -109,7 +104,7 @@ public class InvitationRepositoryAdapter : BaseRepository<Invitation, Invitation
 
         // Apply includes
         if (filter.IncludeProject)
-            query = query.Include(p => p.ProjectNavigation);
+            query = query.Include(p => p.ProjectNavigation).ThenInclude(p=>p.ProjectType);
 
         if (filter.IncludeInvitationStatus)
             query = query.Include(p => p.InvitationStatusNavigation);
