@@ -48,14 +48,14 @@ public partial class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //if (!optionsBuilder.IsConfigured)
-        //{
-        //    optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
-        //}
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
+           optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
         }
+        // if (!optionsBuilder.IsConfigured)
+        // {
+        //     optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
+        // }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
