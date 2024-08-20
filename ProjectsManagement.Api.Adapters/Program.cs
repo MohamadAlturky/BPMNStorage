@@ -28,6 +28,7 @@ var app = builder.Build();
 
 //app.UseMiddleware<AuthenticationCheckerMiddleware>();
 
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
