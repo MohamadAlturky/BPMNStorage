@@ -13,6 +13,7 @@ public class CreateActivityCommand : ICommand<Activity>
     public int Project { get; set; }
     public int ActivityType { get; set; }
     public int ActivityResourceType { get; set; }
+    public List<int> BaseOn { get; set; } = [];
     public AccessControlCriteria Criteria()
     {
         return new()
