@@ -14,4 +14,10 @@
 		<PackageReference Include="coverlet.collector" Version="3.2.0" />
 		<PackageReference Include="Moq" Version="4.20.70" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\ProjectsManagement.Application\ProjectsManagement.Application.csproj" />
+	  <ProjectReference Include="..\ProjectsManagement.Contracts\ProjectsManagement.Contracts.csproj" />
+	  <ProjectReference Include="..\ProjectsManagement.Core\ProjectsManagement.Core.csproj" />
+	  <ProjectReference Include="..\ProjectsManagement.SharedKernel\ProjectsManagement.SharedKernel.csproj" />
+	</ItemGroup>
 </Project>
