@@ -5,7 +5,10 @@
 - uses ports adapters pattern hexagonal architecture
 - uses result type not exceptions
 - uses cqrs
-- efcore
-- filter pattern
-- repository pattern
-- mediator pattern
+- uses postresql efcore
+- uses filter pattern
+- uses repository pattern
+- uses mediator pattern
+- uses mediator pipelines
+- uses minimal api
+- registration of the DI services automatically
