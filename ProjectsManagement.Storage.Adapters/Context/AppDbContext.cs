@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectsManagement.Application.Users;
 using ProjectsManagement.Core.Activities;
 using ProjectsManagement.Core.Common;
 using ProjectsManagement.Core.Constants;
@@ -13,16 +12,11 @@ namespace ProjectsManagement.Storage.Adapters.Context;
 
 public partial class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options, IUserIdentityPort identityPort) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        _identityPort = identityPort;
     }
-    private readonly IUserIdentityPort _identityPort;
     public AppDbContext() : base() { }
-    private int _contributor { get; set; }
-
     public virtual DbSet<Activity> Activities { get; set; }
-    public virtual DbSet<ResourceEntityBase> Resources { get; set; }
 
     public virtual DbSet<ActivityPrecedent> ActivityPrecedents { get; set; }
 
@@ -50,21 +44,19 @@ public partial class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-           optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagement;Username=projects;Password=projects@1234");
+
+            optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagementMain;Username=projects;Password=projects@1234");
         }
-        // if (!optionsBuilder.IsConfigured)
-        // {
-        //     optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
-        // }
+        //if (!optionsBuilder.IsConfigured)
+        //{
+        //    optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
+        //}
+
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        _contributor = 0;
 
-        modelBuilder.Entity<ResourceEntityBase>(entity =>
-        {
-            entity.HasQueryFilter(e=>e.IsActive == true);
-        });
+
 
         modelBuilder.Entity<Activity>(entity =>
         {
@@ -98,6 +90,8 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.Project)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectActivities_Projects_ProjectId");
+            // entity.HasQueryFilter(e => e.IsActive == true);
+
         });
 
         modelBuilder.Entity<ActivityPrecedent>(entity =>
@@ -164,6 +158,8 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.Project)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ContributionMembers_Projects_ProjectId");
+            entity.HasQueryFilter(e => e.IsActive == true);
+
         });
 
         modelBuilder.Entity<ContributionType>(entity =>
@@ -200,6 +196,7 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.Project)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Invitations_Projects_ProjectId");
+            entity.HasQueryFilter(e => e.IsActive == true);
         });
 
         modelBuilder.Entity<InvitationStatus>(entity =>
@@ -232,6 +229,8 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.ProjectType)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Projects_ProjectTypes_ProjectTypeId");
+            entity.HasQueryFilter(e => e.IsActive == true);
+
         });
 
         modelBuilder.Entity<ProjectType>(entity =>

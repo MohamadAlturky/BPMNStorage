@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectsManagement.Storage.Adapters.Context;
@@ -11,9 +12,11 @@ using ProjectsManagement.Storage.Adapters.Context;
 namespace ProjectsManagement.Storage.Adapters.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240820113834_First")]
+    partial class First
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
                     b.ToTable("Activity", (string)null);
                 });
-
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.ActivityPrecedent", b =>
                 {
@@ -183,7 +185,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ContributionType")
@@ -200,7 +201,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
                     b.Property<int>("Project")
                         .HasColumnType("integer");
-
 
                     b.HasKey("Id");
 
@@ -463,7 +463,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
 
             modelBuilder.Entity("ProjectsManagement.Core.Activities.Activity", b =>
                 {
-
                     b.HasOne("ProjectsManagement.Core.Activities.ActivityResourceType", "ActivityResourceTypeNavigation")
                         .WithMany("Activities")
                         .HasForeignKey("ActivityResourceType")
@@ -471,15 +470,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ProjectActivities_ProjectActivityResourceTypes_ProjectActivityResourceTypeId");
 
-
                     b.HasOne("ProjectsManagement.Core.Activities.ActivityType", "ActivityTypeNavigation")
                         .WithMany("Activities")
                         .HasForeignKey("ActivityType")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
-
                         .HasConstraintName("FK_ProjectActivities_ProjectActivityTypes_ProjectActivityTypeId");
-
 
                     b.HasOne("ProjectsManagement.Core.Projects.Project", "ProjectNavigation")
                         .WithMany("Activities")
@@ -489,7 +485,6 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                         .HasConstraintName("FK_ProjectActivities_Projects_ProjectId");
 
                     b.Navigation("ActivityResourceTypeNavigation");
-
 
                     b.Navigation("ActivityTypeNavigation");
 

@@ -18,10 +18,11 @@ public class CreateActivityEndpoint : ICarterModule
             {
                 Name = request.Name,
                 Description = request.Description,
-                Date = request.Date,
+                Date = DateTime.UtcNow,
                 Project = request.Project,
                 ActivityType = request.ActivityType,
-                ActivityResourceType = request.ActivityResourceType
+                ActivityResourceType = request.ActivityResourceType,
+                BaseOn = request.BaseOn
             };
 
             var result = await sender.Send(command);
@@ -31,7 +32,11 @@ public class CreateActivityEndpoint : ICarterModule
                 return Results.BadRequest(result.Error);
             }
 
-            return Results.Created($"/api/activities/{result.Value.Id}", result.Value);
+            return Results.Created($"/api/activities/{result.Value.Id}", new Activity()
+            {
+                Id = result.Value.Id,
+                Date = result.Value.Date,
+            });
         })
         .WithName("CreateActivity")
         .WithTags("Activities")
@@ -43,8 +48,8 @@ public class CreateActivityRequest
 {
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
-    public DateTime Date { get; set; }
     public int Project { get; set; }
     public int ActivityType { get; set; }
     public int ActivityResourceType { get; set; }
+    public List<int> BaseOn { get; set; } = [];
 }

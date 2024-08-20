@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using ProjectsManagement.Contracts.Activities.Queries.Filter;
 using ProjectsManagement.Core.Activities;
+using ProjectsManagement.Representer.Adapters.Filters.Activities;
 using ProjectsManagement.SharedKernel.Pagination;
 
 namespace ProjectsManagement.API.Endpoints.Activities;
@@ -15,14 +16,12 @@ public class FilterActivityEndpoint : ICarterModule
     {
         app.MapPost("/api/activities/filter", async (FilterActivityRequest request, ISender sender) =>
         {
-            var query = new FilterActivityQuery { Filter = new(r=>r = request.Filter) };
+            ActivityFilterBuilder filterBuilder = new();
+            var query = new FilterActivityQuery { Filter = filterBuilder.BuildFilter(request.Filter) };
             var result = await sender.Send(query);
 
-            if (result.IsFailure)
-            {
-                return Results.BadRequest(result.Error);
-            }
-            return Results.Ok(result.Value);
+            return result.IsSuccess ? Results.Ok(filterBuilder.BuildResponse(result.Value)) : Results.BadRequest(result.Error);
+
         })
         .WithName("FilterActivities")
         .WithTags("Activities")

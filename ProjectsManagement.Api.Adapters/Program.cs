@@ -26,7 +26,8 @@ builder.Services.RegisterServices(builder.Configuration, assemblies);
 
 var app = builder.Build();
 
-// app.UseMiddleware<AuthenticationCheckerMiddleware>();
+//app.UseMiddleware<AuthenticationCheckerMiddleware>();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();

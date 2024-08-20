@@ -41,21 +41,21 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
 
         query  = query.AsSplitQuery()
             .Include(p => p.ContributionMembers);
-        
+
         query = query.Where(p => p.ContributionMembers.Any(cm => cm.Contributor == contributor));
 
         // Apply filters
         if (projectFilter.Id.HasValue)
             query = query.Where(p => p.Id == projectFilter.Id);
-        
+
 
         if (projectFilter.ProjectType.HasValue)
             query = query.Where(p => p.ProjectType == projectFilter.ProjectType);
-        
+
 
         // Apply ordering
         //if (projectFilter.OrderByIdDescending)
-            query = query.OrderByDescending(p => p.Id);
+        query = query.OrderByDescending(p => p.Id);
 
         if (projectFilter.OrderByIdAscending)
             query = query.OrderBy(p => p.Id);
@@ -75,14 +75,14 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
             query = query.Include(p => p.ProjectTypeNavigation);
 
         if (projectFilter.IncludeContributionMembers)
-            query = query.Include(p => p.ContributionMembers).ThenInclude(f=>f.ContributionTypeNavigation);
-        
+            query = query.Include(p => p.ContributionMembers).ThenInclude(f => f.ContributionTypeNavigation);
+
         if (projectFilter.IncludeInvitations)
             query = query.Include(p => p.Invitations);
-        
+
         if (projectFilter.IncludeTasks)
             query = query.Include(p => p.Tasks);
-        
+
 
         // Apply pagination
         var totalCount = await query.CountAsync();
@@ -104,20 +104,24 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
         HashSet<int> ids = [];
         if (projectFilter.IncludeContributionMembers)
         {
-            foreach(var item in items)
-            {
-                foreach(var member in item.ContributionMembers)
-                {
-                    ids.Add(member.Contributor);
-                }
-            }
-            HashSet<ContributorInfo> infos = await _identityPort.GetUsersAsync(ids);
-            
             foreach (var item in items)
             {
                 foreach (var member in item.ContributionMembers)
                 {
-                    member.ContributorInfo = infos.FirstOrDefault(e=>e.Id == member.Contributor);
+                    ids.Add(member.Contributor);
+                }
+            }
+            if (ids.Count != 0)
+            {
+
+                HashSet<ContributorInfo> infos = await _identityPort.GetUsersAsync(ids);
+
+                foreach (var item in items)
+                {
+                    foreach (var member in item.ContributionMembers)
+                    {
+                        member.ContributorInfo = infos.FirstOrDefault(e => e.Id == member.Contributor);
+                    }
                 }
             }
         }
@@ -130,5 +134,5 @@ public class ProjectRepositoryAdapter : BaseRepository<Project, ProjectFilter>, 
         };
     }
 }
-    
-    
+
+

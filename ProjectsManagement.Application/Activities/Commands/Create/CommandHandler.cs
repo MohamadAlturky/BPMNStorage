@@ -39,6 +39,14 @@ public class CreateActivityCommandHandler : ICommandHandler<CreateActivityComman
             ActivityType = request.ActivityType,
             ActivityResourceType = request.ActivityResourceType
         };
+        activity.ActivityPrecedentActivityNavigations = [];
+        foreach(var prec in request.BaseOn)
+        {
+            activity.ActivityPrecedentActivityNavigations.Add(new ActivityPrecedent() 
+            { 
+                Precedent = prec
+            });
+        }
 
         try
         {
