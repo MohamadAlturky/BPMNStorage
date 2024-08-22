@@ -12,8 +12,8 @@ public class UserIdentityAdapter : IUserIdentityPort
     private readonly HttpClient _httpClient;
     private readonly string _baseUrl = string.Empty;
     private readonly ILogger<UserIdentityAdapter> _logger;
-    private readonly TokenExtractor _extractor;
-    public UserIdentityAdapter(HttpClient httpClient, IConfiguration configuration, ILogger<UserIdentityAdapter> logger, TokenExtractor extractor)
+    private readonly ITokenExtractor _extractor;
+    public UserIdentityAdapter(HttpClient httpClient, IConfiguration configuration, ILogger<UserIdentityAdapter> logger, ITokenExtractor extractor)
     {
         _httpClient = httpClient;
         _baseUrl = configuration["UserApi:BaseUrl"];

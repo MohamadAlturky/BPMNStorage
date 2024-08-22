@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 namespace ProjectsManagement.Identity.Adapters;
 
-public class TokenExtractor
+public class TokenExtractor: ITokenExtractor
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -26,4 +26,9 @@ public class TokenExtractor
 
         return authHeader.Substring("Bearer ".Length).Trim();
     }
+}
+
+public interface ITokenExtractor
+{
+    string GetToken();
 }

@@ -9,54 +9,62 @@ using ProjectsManagement.SharedKernel.DependencyInjection.Scanner;
 using ProjectsManagement.Storage.Adapters.AssemblyReference;
 using System.Reflection;
 
-var builder = WebApplication.CreateBuilder(args);
+
+namespace ProjectsManagement.Api.Adapters;
+public class Program
+{
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
 
-Assembly[] assemblies = [
-        typeof(ApplicationAssemblyReference).Assembly,
+        Assembly[] assemblies = [
+                typeof(ApplicationAssemblyReference).Assembly,
         typeof(StorageAdaptersAssemblyReference).Assembly,
         typeof(EndpointsAssemblyReference).Assembly,
         typeof(IdentityAssemblyReference).Assembly,
         typeof(APIAssemblyReference).Assembly,
 ];
 
-builder.Services.RegisterServices(builder.Configuration, assemblies);
+        builder.Services.RegisterServices(builder.Configuration, assemblies);
 
 
 
-var app = builder.Build();
+        var app = builder.Build();
 
-//app.UseMiddleware<AuthenticationCheckerMiddleware>();
-
-
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.MapCarter();
-
-app.UseHttpsRedirection();
+        //app.UseMiddleware<AuthenticationCheckerMiddleware>();
 
 
-app.MapGet("/api/header", (HttpContext httpContext) =>
-{
-    const string headerName = "HeaderName";
-    if (httpContext.Request.Headers.TryGetValue(headerName, out var headerValue))
-    {
-        return Results.Ok(headerValue.ToString());
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        app.MapCarter();
+
+        app.UseHttpsRedirection();
+
+
+        app.MapGet("/api/header", (HttpContext httpContext) =>
+        {
+            const string headerName = "HeaderName";
+            if (httpContext.Request.Headers.TryGetValue(headerName, out var headerValue))
+            {
+                return Results.Ok(headerValue.ToString());
+            }
+            return Results.BadRequest($"Header '{headerName}' not found");
+        });
+        app.MapGet("/api/userId", async (IUserIdentityPort port) =>
+        {
+            try
+            {
+                int id = await port.GetUserIdAsync();
+                return Results.Ok(id);
+            }
+            catch (Exception)
+            {
+
+                return Results.BadRequest($"Error");
+            }
+        });
+        app.Run();
     }
-    return Results.BadRequest($"Header '{headerName}' not found");
-});
-app.MapGet("/api/userId", async (IUserIdentityPort port) =>
-{
-    try
-    {
-        int id = await port.GetUserIdAsync();
-        return Results.Ok(id);
-    }
-    catch (Exception)
-    {
-
-    return Results.BadRequest($"Error");
-    }
-});
-app.Run();
+}

@@ -12,6 +12,6 @@ public class DependencyInjectionInstaller : IDependencyInjectionInstaller
     void IDependencyInjectionInstaller.Install(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUserIdentityPort, UserIdentityAdapter>();
-        services.AddScoped(typeof(TokenExtractor));
+        services.AddScoped<ITokenExtractor, TokenExtractor>();
     }
 }
