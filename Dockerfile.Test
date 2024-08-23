@@ -18,6 +18,9 @@ COPY ProjectsManagement.Representer.Adapters/ProjectsManagement.Representer.Adap
 COPY ProjectsManagement.SharedKernel/ProjectsManagement.SharedKernel.csproj ProjectsManagement.SharedKernel/
 COPY ProjectsManagement.Storage.Adapters/ProjectsManagement.Storage.Adapters.csproj ProjectsManagement.Storage.Adapters/
 
+
+# RUN dotnet restore --source https://api.nuget.org/v3/index.json --source https://www.nuget.org --source https://packages.nuget.org/v2 --tl
+# RUN dotnet restore -s https://api.nuget.org/v3/index.json -s https://www.nuget.org
 # Restore dependencies for all projects
 RUN dotnet restore
 
