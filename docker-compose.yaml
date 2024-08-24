@@ -1,7 +1,8 @@
 version: '3.8'
 
 services:
-  app:
+  projects_service: 
+    container_name: projects-service 
     build:
       context: .
       dockerfile: Dockerfile
