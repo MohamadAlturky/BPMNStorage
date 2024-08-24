@@ -27,4 +27,6 @@ public class CreateProjectTaskRequest
     public string Description { get; set; } = null!;
     public int Project { get; set; }
     public int TaskStatus { get; set; }
+    public int TaskResourceType { get; set; }
+    public List<int> BasedOn  { get; set; } =[];
 }

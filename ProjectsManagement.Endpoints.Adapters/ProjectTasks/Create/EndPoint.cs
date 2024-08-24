@@ -21,7 +21,8 @@ public class CreateProjectTaskEndpoint : ICarterModule
                 Name = request.Name,
                 Description = request.Description,
                 Project = request.Project,
-                TaskStatus = request.TaskStatus
+                TaskStatus = request.TaskStatus,
+                BasedOn = request.BasedOn
             };
             var result = await sender.Send(command);
             return result.IsSuccess

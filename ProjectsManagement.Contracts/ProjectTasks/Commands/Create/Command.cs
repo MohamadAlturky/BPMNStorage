@@ -11,7 +11,7 @@ public class CreateProjectTaskCommand : ICommand<ProjectTask>
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
 
-
+    public List<int> BasedOn  { get; set; } 
     public int Project { get; set; }
     public int TaskStatus { get; set; }
     public AccessControlCriteria Criteria()
