@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - new_gateway_network
+    ports:
+      - "5473:8080"
+
+networks:
+  new_gateway_network:
+      external: true
+      name: identityproviderapi_new_gateway_network
