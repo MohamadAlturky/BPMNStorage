@@ -11,7 +11,6 @@ public class UserIdentityAdapterTests
 {
     private Mock<ILogger<UserIdentityAdapter>> _mockLogger;
     private Mock<ITokenExtractor> _mockTokenExtractor;
-    private HttpClient _httpClient = new HttpClient();
     private UserIdentityAdapter _adapter;
     private IConfiguration _configuration;
 
@@ -23,8 +22,10 @@ public class UserIdentityAdapterTests
 
         _configuration = new ConfigurationBuilder()
           .SetBasePath(Directory.GetCurrentDirectory())
-          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+          .AddJsonFile("appsettings.Test.json", optional: false, reloadOnChange: true)
           .Build();
+        //Console.WriteLine(_configuration.GetSection(""));
+        HttpClient _httpClient = new HttpClient();
         _adapter = new UserIdentityAdapter(_httpClient, _configuration, _mockLogger.Object, _mockTokenExtractor.Object);
     }
 
