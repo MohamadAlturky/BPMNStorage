@@ -21,7 +21,7 @@ public class CreateInvitationEndpoint : ICarterModule
             {
                 Message = request.Message,
                 Date = DateTime.UtcNow,
-                By= await userIdentityPort.GetUserIdAsync(),
+                By = await userIdentityPort.GetUserIdAsync(),
                 Contributor = request.Contributor,
                 Project = request.Project,
                 InvitationStatus = ConstantsProvider.PENDING.Id

@@ -42,11 +42,11 @@ public partial class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
+        //if (!optionsBuilder.IsConfigured)
+        //{
 
-            optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagementMain;Username=projects;Password=projects@1234");
-        }
+        //    optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagementMain;Username=projects;Password=projects@1234");
+        //}
         //if (!optionsBuilder.IsConfigured)
         //{
         //    optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
@@ -90,7 +90,6 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.Project)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectActivities_Projects_ProjectId");
-            // entity.HasQueryFilter(e => e.IsActive == true);
 
         });
 
@@ -158,7 +157,6 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.Project)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ContributionMembers_Projects_ProjectId");
-            entity.HasQueryFilter(e => e.IsActive == true);
 
         });
 
@@ -196,7 +194,6 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.Project)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Invitations_Projects_ProjectId");
-            entity.HasQueryFilter(e => e.IsActive == true);
         });
 
         modelBuilder.Entity<InvitationStatus>(entity =>
@@ -229,7 +226,6 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.ProjectType)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Projects_ProjectTypes_ProjectTypeId");
-            entity.HasQueryFilter(e => e.IsActive == true);
 
         });
 
