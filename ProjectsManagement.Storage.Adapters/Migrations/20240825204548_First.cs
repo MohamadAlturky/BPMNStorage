@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectsManagement.Storage.Adapters.Migrations
 {
     /// <inheritdoc />
-    public partial class LAST : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,9 +18,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ActivityResourceType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,9 +31,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ActivityType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,9 +44,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ContributionType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,9 +57,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "InvitationStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,9 +70,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ProjectType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,9 +83,9 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "TaskStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,12 +96,12 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Project",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
-                    ProjectType = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
+                    ProjectType = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,15 +117,15 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Activity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Project = table.Column<int>(type: "int", nullable: false),
-                    ActivityType = table.Column<int>(type: "int", nullable: false),
-                    ActivityResourceType = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Project = table.Column<int>(type: "integer", nullable: false),
+                    ActivityType = table.Column<int>(type: "integer", nullable: false),
+                    ActivityResourceType = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,13 +151,13 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ContributionMember",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Project = table.Column<int>(type: "int", nullable: false),
-                    Contributor = table.Column<int>(type: "int", nullable: false),
-                    ContributionType = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Project = table.Column<int>(type: "integer", nullable: false),
+                    Contributor = table.Column<int>(type: "integer", nullable: false),
+                    ContributionType = table.Column<int>(type: "integer", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,15 +178,15 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Invitation",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Contributor = table.Column<int>(type: "int", nullable: false),
-                    By = table.Column<int>(type: "int", nullable: false),
-                    Project = table.Column<int>(type: "int", nullable: false),
-                    InvitationStatus = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Message = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Contributor = table.Column<int>(type: "integer", nullable: false),
+                    By = table.Column<int>(type: "integer", nullable: false),
+                    Project = table.Column<int>(type: "integer", nullable: false),
+                    InvitationStatus = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,13 +207,13 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "Task",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
-                    Project = table.Column<int>(type: "int", nullable: false),
-                    TaskStatus = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: false),
+                    Project = table.Column<int>(type: "integer", nullable: false),
+                    TaskStatus = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,10 +234,10 @@ namespace ProjectsManagement.Storage.Adapters.Migrations
                 name: "ActivityPrecedents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Activity = table.Column<int>(type: "int", nullable: false),
-                    Precedent = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Activity = table.Column<int>(type: "integer", nullable: false),
+                    Precedent = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

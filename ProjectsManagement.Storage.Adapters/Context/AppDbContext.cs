@@ -12,9 +12,9 @@ namespace ProjectsManagement.Storage.Adapters.Context;
 
 public partial class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
+    // public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    // {
+    // }
     public AppDbContext() : base() { }
     public virtual DbSet<Activity> Activities { get; set; }
 
@@ -42,11 +42,11 @@ public partial class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //if (!optionsBuilder.IsConfigured)
-        //{
+        // if (!optionsBuilder.IsConfigured)
+        // {
 
-        //    optionsBuilder.UseNpgsql("Host=172.29.3.110;Port=5466;Database=ProjectManagementMain;Username=projects;Password=projects@1234");
-        //}
+        //    optionsBuilder.UseNpgsql("Host=localhost;Port=5466;Database=ProjectsMain;Username=projects;Password=projects@1234");
+        // }
         //if (!optionsBuilder.IsConfigured)
         //{
         //    optionsBuilder.UseSqlServer("server=DESKTOP-OO326C9\\SQLEXPRESS01;Database=NewBP;Trusted_Connection=True; Encrypt=False;");
