@@ -12,9 +12,9 @@ namespace ProjectsManagement.Storage.Adapters.Context;
 
 public partial class AppDbContext : DbContext
 {
-    // public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    // {
-    // }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
     public AppDbContext() : base() { }
     public virtual DbSet<Activity> Activities { get; set; }
 
