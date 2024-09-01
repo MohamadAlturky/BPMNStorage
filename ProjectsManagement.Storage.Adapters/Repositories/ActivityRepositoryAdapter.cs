@@ -36,14 +36,6 @@ namespace ProjectsManagement.Infrastructure.Repositories
 
             var query = _context.Activities.AsQueryable();
 
-
-            //query  = query.AsSplitQuery()
-            //    .Include(e => e.ProjectNavigation)
-            //    .ThenInclude(p => p.ContributionMembers.Where(c => c.Project == p.Id && c.Contributor == contibutor));
-
-            //query = query.Where(e =>e.ProjectNavigation.ContributionMembers.Where(c=>c.Contributor == contibutor).Count() != 0);
-
-            // Apply filters
             if (filter.Id.HasValue)
                 query = query.Where(a => a.Id == filter.Id);
 
